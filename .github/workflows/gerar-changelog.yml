@@ -3,7 +3,7 @@ name: Gerar Histórico de Atualizações
 on:
   push:
     branches:
-      - main # Mude para 'principal' se o nome da sua branch no GitHub estiver em português
+      - principal # Ajustado exatamente para o nome da sua branch!
 
 jobs:
   build:
@@ -27,13 +27,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Configura a URL remota para usar o token de autenticação integrado
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@://github.com{{ github.repository }}.git"
-          
           git config --local user.email "41898282+github-actions[bot]@://github.com"
           git config --local user.name "github-actions[bot]"
           
           git add log.md
           git commit -m "Changelog atualizado automaticamente [skip ci]" || exit 0
-          git push origin HEAD:${{ github.ref_name }}
-
+          git push "https://x-access-token:${GITHUB_TOKEN}@://github.com{{ github.repository }}.git" HEAD:principal
