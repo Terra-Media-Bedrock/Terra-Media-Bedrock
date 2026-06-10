@@ -3,12 +3,12 @@ name: Gerar Histórico de Atualizações
 on:
   push:
     branches:
-      - main
+      - main # Mude para 'principal' se o nome da sua branch no GitHub estiver em português
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: # Garante explicitamente a permissão de escrita neste job
+    permissions:
       contents: write
       
     steps:
@@ -24,9 +24,16 @@ jobs:
           git log --pretty=format:"* **%ad**: %s" --date=short >> log.md
 
       - name: Commitar e dar Push do Log
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Configura a URL remota para usar o token de autenticação integrado
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@://github.com{{ github.repository }}.git"
+          
           git config --local user.email "41898282+github-actions[bot]@://github.com"
           git config --local user.name "github-actions[bot]"
+          
           git add log.md
           git commit -m "Changelog atualizado automaticamente [skip ci]" || exit 0
-          git push
+          git push origin HEAD:${{ github.ref_name }}
+
