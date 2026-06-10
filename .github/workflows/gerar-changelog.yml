@@ -3,28 +3,30 @@ name: Gerar Histórico de Atualizações
 on:
   push:
     branches:
-      - main # Mude para 'master' se sua branch principal tiver esse nome
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: # Garante explicitamente a permissão de escrita neste job
+      contents: write
+      
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Baixa todo o histórico de commits
+          fetch-depth: 0
 
       - name: Gerar arquivo de log
         run: |
           echo "### Histórico de Atualizações" > log.md
           echo "" >> log.md
-          # Lista os commits formatados (Data - Mensagem) e salva no arquivo log.md
           git log --pretty=format:"* **%ad**: %s" --date=short >> log.md
 
       - name: Commitar e dar Push do Log
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "41898282+github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
           git add log.md
           git commit -m "Changelog atualizado automaticamente [skip ci]" || exit 0
           git push
