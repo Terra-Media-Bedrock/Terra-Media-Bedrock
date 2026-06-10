@@ -3,7 +3,6 @@
 * **2026-06-10**: Update gerar-changelog.yml
 * **2026-06-10**: Delete _posts.zip
 * **2026-06-10**: Create gerar-changelog.yml
-* **2026-06-10**: Add files via upload
 * **2026-06-09**: Create jekyll-gh-pages.yml
 * **2026-06-09**: Create static.yml
 * **2026-06-09**: Update news.html
